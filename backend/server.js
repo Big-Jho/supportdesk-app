@@ -27,7 +27,7 @@ const ticketRoutes = require("./routes/ticketRoutes");
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// CONNECTING OUR ROUTES
+// CONNECTING OUR BACKEND ROUTES
 app.use("/api/user", userRoutes);
 app.use("/api/tickets", ticketRoutes);
 
@@ -35,11 +35,12 @@ app.use(errorHandler);
 
 // SERVE FRONTEND
 if (process.env.NODE_ENV === "production") {
-  // Build folder as static
-  app.use(express.static(path.join(__dirname, "../frontend/build")));
+  // Serve static files from the React/Vite build output
+  app.use(express.static(path.join(__dirname, "../frontend/dist")));
 
+  // For any route not caught by the API, serve the React app
   app.get("*", (req, res) =>
-    res.sendFile(__dirname, "../", "frontend", "build", "index.html"),
+    res.sendFile(path.join(__dirname, "../frontend/dist/index.html")),
   );
 } else {
   app.get("/", (_, res) => {
