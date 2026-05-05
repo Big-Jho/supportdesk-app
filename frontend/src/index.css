@@ -7,6 +7,10 @@
   box-sizing: border-box;
 }
 
+html {
+  font-size: 87.5%; /* 14px / 16px = 87.5% */
+}
+
 body {
   font-family: "Poppins", sans-serif;
   height: 100vh;
