@@ -1,0 +1,12 @@
+//  BACKEND //
+1. Register User 
+2. Login User
+3. Get Profile
+4. Edit profile
+5. Request/create a Token
+6. Edit a Token
+7. Mark a Token as successful or complete
+8. Delete a Token
+9. Add a note to Token
+10. Edit note
+11. Delete note from a token
