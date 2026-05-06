@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { FaSignInAlt } from "react-icons/fa";
 import { useSelector, useDispatch } from "react-redux";
@@ -27,7 +27,9 @@ function Login() {
     }
 
     // Redirect if logged in
-    if (isSuccess || user) {
+    if ((isSuccess || user) && user.isAdmin) {
+      navigate("/admin");
+    } else if (isSuccess || user) {
       navigate("/");
     }
 
@@ -96,6 +98,8 @@ function Login() {
             <button className="btn btn-block">Submit</button>
           </div>
         </form>
+
+        <Link to={"/admin/login"}>Login as Admin</Link>
       </section>
     </>
   );

@@ -23,6 +23,7 @@ app.use(
 // IMPORTING VARIOUS ROUTES
 const userRoutes = require("./routes/userRoutes");
 const ticketRoutes = require("./routes/ticketRoutes");
+const adminRoutes = require("./routes/adminRoutes");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
@@ -30,6 +31,7 @@ app.use(express.urlencoded({ extended: false }));
 // CONNECTING OUR BACKEND ROUTES
 app.use("/api/user", userRoutes);
 app.use("/api/tickets", ticketRoutes);
+app.use("/api/admin", adminRoutes);
 
 app.use(errorHandler);
 

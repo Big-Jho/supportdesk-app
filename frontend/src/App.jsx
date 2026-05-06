@@ -3,6 +3,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Header from "./components/Header";
 import PrivateRoute from "./components/PrivateRoute";
+import AdminRoute from "./components/AdminRoute";
 
 // Importing Pages
 import Home from "./pages/Home";
@@ -11,6 +12,9 @@ import Login from "./pages/Login";
 import NewTicket from "./pages/NewTicket";
 import Tickets from "./pages/Tickets";
 import Ticket from "./pages/Ticket";
+import AdminTicket from "./pages/AdminTicket";
+import AdminTickets from "./pages/AdminTickets";
+import AdminDashboard from "./pages/AdminDashboard";
 
 function App() {
   return (
@@ -30,6 +34,13 @@ function App() {
             </Route>
             <Route path="/ticket/:ticketId" element={<PrivateRoute />}>
               <Route path="/ticket/:ticketId" element={<Ticket />} />
+            </Route>
+
+            {/* ADMIN ROUTES */}
+
+            <Route path="/admin" element={<AdminRoute />}>
+              <Route path="/admin" element={<AdminDashboard />} />
+              <Route path="/admin/tickets" element={<AdminTickets />} />
             </Route>
           </Routes>
         </div>

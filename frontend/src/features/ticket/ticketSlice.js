@@ -52,6 +52,27 @@ export const getTickets = createAsyncThunk(
   },
 );
 
+// Get all tickets by admin
+export const getAdminTickets = createAsyncThunk(
+  "tickets/getAdminAll",
+  async (_, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.user.token;
+      return await ticketService.getAdminTickets(token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      console.log(message);
+      thunkAPI.rejectWithValue(message);
+    }
+  },
+);
+
 // Get a particular ticket via ticketId
 export const getTicket = createAsyncThunk(
   "tickets/get",

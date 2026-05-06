@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const API_URL = "/api/tickets";
+const ADMIN_API_URL = "/api/admin/tickets";
 
 // Create new ticket
 const createTicket = async (ticketData, token) => {
@@ -46,6 +47,21 @@ const getTickets = async (token) => {
   }
 };
 
+// Get all tickets by admin
+const getAdminTickets = async (token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const response = await axios.get(ADMIN_API_URL, config);
+
+  if (response.data) {
+    return response.data;
+  }
+};
+
 // Close ticket by ticketId
 const closeTicket = async (ticketId, token) => {
   const config = {
@@ -65,5 +81,12 @@ const closeTicket = async (ticketId, token) => {
   }
 };
 
-const ticketService = { getTickets, getTicket, createTicket, closeTicket };
+const ticketService = {
+  getTickets,
+  getTicket,
+  createTicket,
+  closeTicket,
+  getAdminTickets,
+};
+
 export default ticketService;
