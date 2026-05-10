@@ -55,10 +55,10 @@ export const getTickets = createAsyncThunk(
 // Get all tickets by admin
 export const getAdminTickets = createAsyncThunk(
   "tickets/getAdminAll",
-  async (_, thunkAPI) => {
+  async (filter, thunkAPI) => {
     try {
       const token = thunkAPI.getState().auth.user.token;
-      return await ticketService.getAdminTickets(token);
+      return await ticketService.getAdminTickets(token, filter);
     } catch (error) {
       const message =
         (error.response &&
@@ -94,6 +94,27 @@ export const getTicket = createAsyncThunk(
   },
 );
 
+// Get Admin a particular ticket  via ticketId
+export const getAdminTicket = createAsyncThunk(
+  "tickets/getAdmin",
+  async (ticketId, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.user.token;
+      return await ticketService.getAdminTicket(ticketId, token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      console.log(message);
+      thunkAPI.rejectWithValue(message);
+    }
+  },
+);
+
 // Change a ticket status  - close a ticket
 export const closeTicket = createAsyncThunk(
   "tickets/closeTicket",
@@ -115,11 +136,55 @@ export const closeTicket = createAsyncThunk(
   },
 );
 
+// Change a ticket status  - Open a ticket by admin
+export const openTicket = createAsyncThunk(
+  "tickets/openTicket",
+  async (ticketId, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.user.token;
+      return await ticketService.openTicket(ticketId, token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      console.log(message);
+      thunkAPI.rejectWithValue(message);
+    }
+  },
+);
+
+// Filter tickets
+export const filterTickets = createAsyncThunk(
+  "tickets/filterTicket",
+  async (filter, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.user.token;
+      return await ticketService.filterTickets(filter, token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      console.log(message);
+      thunkAPI.rejectWithValue(message);
+    }
+  },
+);
+
 export const ticketSlice = createSlice({
   name: "ticket",
   initialState,
   extraReducers: (builders) => {
     builders
+
+      // Create ticket by users
       .addCase(createTicket.pending, (state) => {
         state.isLoading = true;
       })
@@ -132,6 +197,8 @@ export const ticketSlice = createSlice({
         state.message = action.payload;
         state.isError = true;
       })
+
+      // Get User's tickets
       .addCase(getTickets.pending, (state) => {
         state.isLoading = true;
       })
@@ -146,6 +213,8 @@ export const ticketSlice = createSlice({
         state.isError = true;
         state.tickets = null;
       })
+
+      // Get Single ticket by user
       .addCase(getTicket.pending, (state) => {
         state.isLoading = true;
       })
@@ -160,6 +229,8 @@ export const ticketSlice = createSlice({
         state.isError = true;
         state.ticket = null;
       })
+
+      // Close ticket by user
       .addCase(closeTicket.fulfilled, (state, action) => {
         state.isSuccess = true;
         state.tickets.map((ticket) =>
@@ -167,6 +238,49 @@ export const ticketSlice = createSlice({
             ? (ticket.status = "closed")
             : ticket,
         );
+      })
+
+      // Open ticket by user
+      .addCase(openTicket.fulfilled, (state, action) => {
+        state.isSuccess = true;
+        state.tickets.map((ticket) =>
+          ticket._id === action.payload._id
+            ? (ticket.status = "opened")
+            : ticket,
+        );
+        state.ticket.status = "opened";
+      })
+
+      // Get Tickets by Admin
+      .addCase(getAdminTickets.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getAdminTickets.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.tickets = action.payload;
+      })
+      .addCase(getAdminTickets.rejected, (state, action) => {
+        state.isLoading = false;
+        state.message = action.payload;
+        state.isError = true;
+        state.tickets = null;
+      })
+
+      // Get Single ticket by Admin
+      .addCase(getAdminTicket.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getAdminTicket.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.ticket = action.payload;
+      })
+      .addCase(getAdminTicket.rejected, (state, action) => {
+        state.isLoading = false;
+        state.message = action.payload;
+        state.isError = true;
+        state.ticket = null;
       });
   },
   reducers: {

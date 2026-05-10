@@ -36,6 +36,13 @@ function Login() {
     dispatch(reset());
   }, [isError, isSuccess, dispatch, message, user, navigate, reset]);
 
+  // useEffect(() => {
+  //   // Redirect if admin
+  //   (isSuccess || user) && user.isAdmin && navigate("/admin");
+
+  //   dispatch(reset());
+  // }, [isError, isSuccess, dispatch, message, user, navigate, reset]);
+
   const onChange = (e) => {
     setFormData((prevState) => ({
       ...prevState,
@@ -98,8 +105,6 @@ function Login() {
             <button className="btn btn-block">Submit</button>
           </div>
         </form>
-
-        <Link to={"/admin/login"}>Login as Admin</Link>
       </section>
     </>
   );

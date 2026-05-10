@@ -1,17 +1,17 @@
 import React from "react";
 import BackButton from "../components/BackButton";
 import { useSelector, useDispatch } from "react-redux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { getAdminTickets, reset } from "../features/ticket/ticketSlice";
 import Spinner from "../components/Spinner";
 import TicketItem from "../components/TicketItem";
-import { disable } from "colors";
 
 function AdminTickets() {
   const { isLoading, isSuccess, tickets } = useSelector(
     (state) => state.tickets,
   );
 
+  const [filter, setFilter] = useState("");
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -23,8 +23,8 @@ function AdminTickets() {
   }, [isSuccess, dispatch]);
 
   useEffect(() => {
-    dispatch(getAdminTickets());
-  }, [dispatch]);
+    dispatch(getAdminTickets(filter));
+  }, [dispatch, filter]);
 
   if (isLoading) return <Spinner />;
 
@@ -35,23 +35,56 @@ function AdminTickets() {
         <h1>Tickets</h1>
       </section>
 
-      <div className="tickets">
-        {tickets.length >= 1 ? (
+      <div className="tickets pb-10">
+        <>
+          <div className="ticket-headings grid-cols-5">
+            <div>Date</div>
+            <div>Name</div>
+            <div>Product</div>
+            <div>Status</div>
+            <select
+              className="focus:outline-0"
+              onChange={(e) => setFilter(e.target.value)}
+              value={filter}
+            >
+              <option value="">No Filter</option>
+              <option value="new">New</option>
+              <option value="opened">Opened</option>
+              <option value="closed">Closed</option>
+            </select>
+          </div>
+
+          {tickets.length >= 1 ? (
+            tickets.map((ticket) => (
+              <TicketItem admin={true} key={ticket._id} ticket={ticket} />
+            ))
+          ) : (
+            <h1>You do not have any {filter} ticket...</h1>
+          )}
+        </>
+
+        {/* {tickets.length >= 1 ? (
           <>
-            <div className="ticket-headings">
+            <div className="ticket-headings grid-cols-5">
               <div>Date</div>
+              <div>Name</div>
               <div>Product</div>
               <div>Status</div>
-              <div></div>
+              <select className="focus:outline-0" onChange={onFilterChange}>
+                <option value="">No Filter</option>
+                <option value="new">New</option>
+                <option value="opened">Opened</option>
+                <option value="closed">Closed</option>
+              </select>
             </div>
 
             {tickets.map((ticket) => (
-              <TicketItem key={ticket._id} ticket={ticket} />
+              <TicketItem admin={true} key={ticket._id} ticket={ticket} />
             ))}
           </>
         ) : (
           <h1>You do not have any ticket...</h1>
-        )}
+        )} */}
       </div>
     </>
   );

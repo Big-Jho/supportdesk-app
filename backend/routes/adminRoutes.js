@@ -4,6 +4,7 @@ const { protect } = require("../middleware/authMiddleware");
 const {
   getAllTickets,
   getAdminTicket,
+  getAdminNotes,
   openTicket,
   addAdminNote,
 } = require("../controllers/adminTicketController");
@@ -18,6 +19,7 @@ router
 
 router
   .route("/tickets/:ticketId/notes")
+  .get(protect, isAdminCheck, getAdminNotes)
   .post(protect, isAdminCheck, addAdminNote);
 
 module.exports = router;

@@ -48,14 +48,34 @@ const getTickets = async (token) => {
 };
 
 // Get all tickets by admin
-const getAdminTickets = async (token) => {
+const getAdminTickets = async (token, filter) => {
   const config = {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   };
 
-  const response = await axios.get(ADMIN_API_URL, config);
+  let searchParam = filter && `?status=${filter}`;
+
+  const response = await axios.get(
+    ADMIN_API_URL + `${searchParam ? searchParam : ""}`,
+    config,
+  );
+
+  if (response.data) {
+    return response.data;
+  }
+};
+
+// Get Admin ticket by ticketId
+const getAdminTicket = async (ticketId, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const response = await axios.get(`${ADMIN_API_URL}/${ticketId}`, config);
 
   if (response.data) {
     return response.data;
@@ -81,11 +101,32 @@ const closeTicket = async (ticketId, token) => {
   }
 };
 
+// Open ticket through ticketId by Admin
+const openTicket = async (ticketId, token) => {
+  const config = {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  };
+
+  const response = await axios.put(
+    `${ADMIN_API_URL}/${ticketId}`,
+    { status: "opened" },
+    config,
+  );
+
+  if (response.data) {
+    return response.data;
+  }
+};
+
 const ticketService = {
   getTickets,
   getTicket,
   createTicket,
   closeTicket,
+  openTicket,
+  getAdminTicket,
   getAdminTickets,
 };
 

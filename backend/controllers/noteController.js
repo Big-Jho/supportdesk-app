@@ -14,7 +14,10 @@ const getNotes = asyncHandler(async (req, res) => {
     throw new Error("Not Authorized");
   }
 
-  const notes = await Note.find({ ticket: req.params.ticketId });
+  const notes = await Note.find({ ticket: req.params.ticketId }).populate(
+    "user",
+    "name",
+  );
 
   res.status(200).json(notes);
 });
@@ -30,14 +33,18 @@ const addNotes = asyncHandler(async (req, res) => {
     throw new Error("Not Authorized");
   }
 
-  const notes = await Note.create({
+  let note;
+
+  note = await Note.create({
     user: req.user.id,
     ticket: req.params.ticketId,
     isStaff: false,
     text: req.body.text,
   });
 
-  res.status(201).json(notes);
+  note = await note.populate("user", "name");
+
+  res.status(201).json(note);
 });
 
 module.exports = { getNotes, addNotes };

@@ -1,7 +1,19 @@
 import { Link } from "react-router-dom";
 import { FaQuestionCircle, FaTicketAlt } from "react-icons/fa";
+import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Home() {
+  const { user } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (user && user.isAdmin) {
+      navigate("/admin");
+    }
+  }, [user]);
+
   return (
     <>
       <section className="heading">

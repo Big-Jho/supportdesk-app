@@ -81,7 +81,7 @@ function Ticket() {
 
   if (isError) return <h3>Something went wrong</h3>;
 
-  if (isLoading) return <Spinner />;
+  if (isLoading || noteIsLoading) return <Spinner />;
 
   return (
     <>
@@ -163,6 +163,8 @@ function Ticket() {
           </button>
         )}
       </div>
+
+      <br className="pt-10" />
     </>
   );
 }

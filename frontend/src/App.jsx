@@ -41,6 +41,7 @@ function App() {
             <Route path="/admin" element={<AdminRoute />}>
               <Route path="/admin" element={<AdminDashboard />} />
               <Route path="/admin/tickets" element={<AdminTickets />} />
+              <Route path="/admin/ticket/:ticketId" element={<AdminTicket />} />
             </Route>
           </Routes>
         </div>

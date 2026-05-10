@@ -9,7 +9,6 @@ const Note = require("../models/noteModel");
 const getAllTickets = asyncHandler(async (req, res) => {
   let filter = {};
 
-  console.log(req.query);
   if (req.query.status) {
     filter.status = req.query.status;
   }
@@ -56,14 +55,36 @@ const openTicket = asyncHandler(async (req, res) => {
 const addAdminNote = asyncHandler(async (req, res) => {
   const ticket = await Ticket.findById(req.params.ticketId);
 
-  const note = await Note.create({
+  let note;
+
+  note = await Note.create({
     user: ticket.user._id,
     ticket: req.params.ticketId,
     isStaff: true,
     text: req.body.text,
   });
 
+  note = await note.populate("user", "name");
+
   res.status(200).json(note);
 });
 
-module.exports = { getAllTickets, getAdminTicket, openTicket, addAdminNote };
+// @desc    Get ticket notes by admin
+// @route   GET /api/admin/tickets/:ticketId/notes
+// @access  Private
+const getAdminNotes = asyncHandler(async (req, res) => {
+  const note = await Note.find({ ticket: req.params.ticketId }).populate(
+    "user",
+    "name",
+  );
+
+  res.status(200).json(note);
+});
+
+module.exports = {
+  getAllTickets,
+  getAdminTicket,
+  openTicket,
+  addAdminNote,
+  getAdminNotes,
+};

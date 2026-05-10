@@ -30,6 +30,27 @@ export const getNotes = createAsyncThunk(
   },
 );
 
+// Get admin ticket notes
+export const getAdminNotes = createAsyncThunk(
+  "note/getAll",
+  async (ticketId, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.user.token;
+      return await noteService.getAdminNotes(ticketId, token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      console.log(message);
+      thunkAPI.rejectWithValue(message);
+    }
+  },
+);
+
 // Create ticket note
 export const createNotes = createAsyncThunk(
   "note/create",
@@ -37,6 +58,27 @@ export const createNotes = createAsyncThunk(
     try {
       const token = thunkAPI.getState().auth.user.token;
       return await noteService.createNotes(noteText, ticketId, token);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+
+      console.log(message);
+      thunkAPI.rejectWithValue(message);
+    }
+  },
+);
+
+// Create ticket note by Admin
+export const createAdminNote = createAsyncThunk(
+  "note/createAdmin",
+  async ({ ticketId, noteText }, thunkAPI) => {
+    try {
+      const token = thunkAPI.getState().auth.user.token;
+      return await noteService.createAdminNote(noteText, ticketId, token);
     } catch (error) {
       const message =
         (error.response &&
@@ -60,6 +102,8 @@ export const noteSlice = createSlice({
 
   extraReducers: (builder) => {
     builder
+
+      // Get note by User
       .addCase(getNotes.pending, (state) => {
         state.isLoading = true;
       })
@@ -74,6 +118,8 @@ export const noteSlice = createSlice({
         state.isError = true;
         state.notes = null;
       })
+
+      // Create note by User
       .addCase(createNotes.pending, (state) => {
         state.isLoading = true;
       })
@@ -83,6 +129,22 @@ export const noteSlice = createSlice({
         state.notes.push(action.payload);
       })
       .addCase(createNotes.rejected, (state, action) => {
+        state.isLoading = false;
+        state.message = action.payload;
+        state.isError = true;
+        state.notes = null;
+      })
+
+      // Create note by Admin
+      .addCase(createAdminNote.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(createAdminNote.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.notes.push(action.payload);
+      })
+      .addCase(createAdminNote.rejected, (state, action) => {
         state.isLoading = false;
         state.message = action.payload;
         state.isError = true;

@@ -11,9 +11,26 @@ function NoteItem({ note }) {
         color: note.isStaff ? "#fff" : "#000",
       }}
     >
-      <h4 style={{ fontWeight: "700" }}>
-        Note from {note.isStaff ? <span>Staff</span> : <span>{user.name}</span>}
-      </h4>
+      {user.isAdmin && (
+        <h4 style={{ fontWeight: "700" }}>
+          Note from{" "}
+          {note.isStaff ? (
+            <span>You (Admin)</span>
+          ) : (
+            <span>{note.user.name}</span>
+          )}
+        </h4>
+      )}
+
+      {!user.isAdmin && (
+        <h4 style={{ fontWeight: "700" }}>
+          Note from {note.isStaff ? <span>Admin</span> : <span>You</span>}
+        </h4>
+      )}
+
+      {/* <h4 style={{ fontWeight: "700" }}>
+        Note from {note.isStaff ? <span>Admin</span> : <span>You</span>}
+      </h4> */}
 
       <p>{note.text}</p>
 

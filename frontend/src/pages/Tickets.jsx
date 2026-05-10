@@ -36,7 +36,7 @@ function Tickets() {
       <div className="tickets">
         {tickets.length >= 1 ? (
           <>
-            <div className="ticket-headings">
+            <div className="ticket-headings grid-cols-4">
               <div>Date</div>
               <div>Product</div>
               <div>Status</div>

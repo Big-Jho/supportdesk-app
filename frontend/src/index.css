@@ -1,9 +1,10 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap");
 
 @import "tailwindcss";
+
 * {
-  margin: 0;
-  padding: 0;
+  /* margin: 0; */
+  /* padding: 0; */
   box-sizing: border-box;
 }
 
@@ -190,6 +191,11 @@ h3 {
   border: none;
 }
 
+.btn-opened {
+  background: steelblue;
+  border: none;
+}
+
 .btn-back {
   width: 150px;
   margin-bottom: 20px;
@@ -225,7 +231,7 @@ h3 {
 .ticket,
 .ticket-headings {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  /* grid-template-columns: repeat(4, 1fr); */
   gap: 20px;
   justify-content: space-between;
   align-items: center;
