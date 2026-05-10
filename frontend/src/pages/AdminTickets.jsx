@@ -63,28 +63,7 @@ function AdminTickets() {
           )}
         </>
 
-        {/* {tickets.length >= 1 ? (
-          <>
-            <div className="ticket-headings grid-cols-5">
-              <div>Date</div>
-              <div>Name</div>
-              <div>Product</div>
-              <div>Status</div>
-              <select className="focus:outline-0" onChange={onFilterChange}>
-                <option value="">No Filter</option>
-                <option value="new">New</option>
-                <option value="opened">Opened</option>
-                <option value="closed">Closed</option>
-              </select>
-            </div>
-
-            {tickets.map((ticket) => (
-              <TicketItem admin={true} key={ticket._id} ticket={ticket} />
-            ))}
-          </>
-        ) : (
-          <h1>You do not have any ticket...</h1>
-        )} */}
+        <br className="pt-10" />
       </div>
     </>
   );

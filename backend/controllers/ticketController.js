@@ -27,7 +27,6 @@ const createTicket = asyncHandler(async (req, res) => {
 // @route   GET /api/tickets
 // @access  Private
 const getTickets = asyncHandler(async (req, res) => {
-  // console.log(req.user);
   const tickets = await Ticket.find({ user: req.user.id });
 
   res.status(200).json(tickets);

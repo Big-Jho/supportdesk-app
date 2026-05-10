@@ -13,9 +13,7 @@ function AdminDashboard() {
       <Link to={"/admin/tickets"} className="btn btn-block btn-reverse">
         <FaTicketAlt /> Get All Tickets
       </Link>
-      {/* <Link to={"/tickets"} className="btn btn-block ">
-       <FaQuestionCircle /> Create New Ticket
-      </Link> */}
+      <br className="pt-10" />
     </>
   );
 }

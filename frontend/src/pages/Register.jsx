@@ -130,6 +130,8 @@ function Register() {
           </div>
         </form>
       </section>
+
+      <br className="pt-10" />
     </>
   );
 }

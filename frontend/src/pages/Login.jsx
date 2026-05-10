@@ -106,6 +106,8 @@ function Login() {
           </div>
         </form>
       </section>
+
+      <br className="pt-10" />
     </>
   );
 }

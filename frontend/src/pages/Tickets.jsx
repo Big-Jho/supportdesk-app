@@ -51,6 +51,8 @@ function Tickets() {
           <h1>You do not have any ticket...</h1>
         )}
       </div>
+
+      <br className="pt-10" />
     </>
   );
 }

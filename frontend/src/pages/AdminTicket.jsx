@@ -83,8 +83,6 @@ function AdminTicket() {
     toast.success("Ticket Opened");
   };
 
-  // console.log(ticket.user);
-
   if (isError) return <h3>Something went wrong</h3>;
 
   if (isLoading || noteIsLoading) return <Spinner />;
